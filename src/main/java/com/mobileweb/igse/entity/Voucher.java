@@ -1,4 +1,4 @@
-package com.mobileweb.igse.entities;
+package com.mobileweb.igse.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

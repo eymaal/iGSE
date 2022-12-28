@@ -1,6 +1,4 @@
-package com.mobileweb.igse.entities;
-
-import com.sun.istack.NotNull;
+package com.mobileweb.igse.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

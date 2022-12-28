@@ -1,4 +1,4 @@
-package com.mobileweb.igse.entities;
+package com.mobileweb.igse.entity;
 
 import javax.persistence.*;
 import java.util.Date;
