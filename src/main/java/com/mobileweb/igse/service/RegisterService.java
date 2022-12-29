@@ -5,6 +5,8 @@ import com.mobileweb.igse.entity.Voucher;
 import com.mobileweb.igse.exceptions.GeneralException;
 import com.mobileweb.igse.repository.CustomerRepository;
 import com.mobileweb.igse.repository.VoucherRepository;
+import com.mobileweb.igse.utility.PasswordEncoder;
+import com.mobileweb.igse.utility.Responses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,10 +39,11 @@ public class RegisterService {
             Voucher currentVoucher = voucher.get();
             currentVoucher.setUsed(1);
             voucherRepository.save(currentVoucher);
+            customer.setPassword_hash(PasswordEncoder.shaEncode(customer.getPassword_hash()));
             customerRepository.save(customer);
             return new ResponseEntity(customer, HttpStatus.CREATED);
         }catch (Exception e){
-            return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
+            return Responses.makeBadRequest(e.getMessage());
         }
     }
 }

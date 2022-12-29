@@ -21,10 +21,9 @@ public class Reading {
     @Column(nullable = false)
     private float gas_reading;
     @Column(columnDefinition = "VARCHAR(25)")
-    private String status = null;
+    private String status = "pending";
 
-    public Reading(int reading_id, String customer_id, Date submission_date, float elec_readings_day, float elec_readings_night, float gas_reading, String status) {
-        this.reading_id = reading_id;
+    public Reading(String customer_id, Date submission_date, float elec_readings_day, float elec_readings_night, float gas_reading, String status) {
         this.customer_id = customer_id;
         this.submission_date = submission_date;
         this.elec_readings_day = elec_readings_day;
