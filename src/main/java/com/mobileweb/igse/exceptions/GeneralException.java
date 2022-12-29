@@ -1,7 +1,11 @@
 package com.mobileweb.igse.exceptions;
 
-public class GeneralException extends Exception{
+import java.io.Serializable;
+
+public class GeneralException implements Serializable {
+    private String message;
+
     public GeneralException(String message) {
-        super(message);
+        this.message = message;
     }
 }

@@ -16,8 +16,8 @@ public class Controller {
     private RegisterService registerService;
 
     @PostMapping("/register")
-    public ResponseEntity registrationController(@RequestBody Customer customer){
-        return registerService.register(customer);
+    public ResponseEntity registrationController(@RequestBody Customer customer, @RequestParam String evcCode){
+        return registerService.register(customer, evcCode);
     }
 
 }
