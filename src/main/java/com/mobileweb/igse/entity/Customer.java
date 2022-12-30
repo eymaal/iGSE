@@ -23,7 +23,7 @@ public class Customer {
     @Column(nullable = false)
     private float balance = 200;
     @Column(nullable = false, columnDefinition = "VARCHAR(45)")
-    private String type = "user";
+    private String type = "customer";
 
     public Customer(String customer_id, String password_hash, String address, String property_type, int bedroom_num) {
         this.customer_id = customer_id;

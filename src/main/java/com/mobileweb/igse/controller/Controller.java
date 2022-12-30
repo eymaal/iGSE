@@ -5,7 +5,6 @@ import com.mobileweb.igse.entity.Reading;
 import com.mobileweb.igse.service.ReadingService;
 import com.mobileweb.igse.service.RegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +26,11 @@ public class Controller {
     @PostMapping("/addReading")
     public ResponseEntity addReading(@RequestBody Reading reading){
         return readingService.addReading(reading);
+    }
+
+    @PostMapping("/getReadings")
+    public ResponseEntity getReadings(@RequestBody Customer customer){
+        return readingService.getReadings(customer);
     }
 
 }

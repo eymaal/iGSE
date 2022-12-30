@@ -2,7 +2,6 @@ package com.mobileweb.igse.service;
 
 import com.mobileweb.igse.entity.Customer;
 import com.mobileweb.igse.entity.Voucher;
-import com.mobileweb.igse.exceptions.GeneralException;
 import com.mobileweb.igse.repository.CustomerRepository;
 import com.mobileweb.igse.repository.VoucherRepository;
 import com.mobileweb.igse.utility.PasswordEncoder;
