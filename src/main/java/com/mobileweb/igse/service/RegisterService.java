@@ -40,7 +40,7 @@ public class RegisterService {
             voucherRepository.save(currentVoucher);
             customer.setPassword_hash(PasswordEncoder.shaEncode(customer.getPassword_hash()));
             customerRepository.save(customer);
-            return new ResponseEntity(customer, HttpStatus.CREATED);
+            return new ResponseEntity(HttpStatus.CREATED);
         }catch (Exception e){
             return Responses.makeBadRequest(e.getMessage());
         }

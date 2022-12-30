@@ -50,7 +50,6 @@ public class ReadingService {
 
     public ResponseEntity getReadings(Customer customer) {
         try{
-            System.out.println(String.format("CUSTOMER ID: %s", customer.getCustomer_id()));
             if(loginService.findCustomer(customer.getCustomer_id()).isEmpty()){
                 throw new Exception("Customer does not exist. Register");
             }
