@@ -46,7 +46,7 @@ public class Controller {
     }
 
     @PostMapping("/addVoucher")
-    public ResponseEntity redeeemVoucher(@RequestBody Customer customer, @RequestParam String evcCode){
+    public ResponseEntity redeemVoucher(@RequestBody Customer customer, @RequestParam String evcCode){
         return voucherService.redeemCode(customer, evcCode);
     }
 
