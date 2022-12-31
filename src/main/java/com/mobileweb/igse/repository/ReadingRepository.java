@@ -18,4 +18,7 @@ public interface ReadingRepository extends CrudRepository<Reading,Integer> {
     @Query(value = "SELECT r FROM Reading r WHERE r.customer_id=?1 ORDER BY r.submission_date DESC")
     public List<Reading> findAllByCustomerId(String customer_id);
 
+    @Query(value = "SELECT r FROM Reading r WHERE r.customer_id=?1 AND r.status='pending' ORDER BY r.submission_date DESC")
+    public List<Reading> findAllPendingByCustomerId(String customer_id);
+
 }

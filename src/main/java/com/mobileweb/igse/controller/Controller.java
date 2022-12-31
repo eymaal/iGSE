@@ -2,10 +2,7 @@ package com.mobileweb.igse.controller;
 
 import com.mobileweb.igse.entity.Customer;
 import com.mobileweb.igse.entity.Reading;
-import com.mobileweb.igse.service.LoginService;
-import com.mobileweb.igse.service.ReadingService;
-import com.mobileweb.igse.service.RegisterService;
-import com.mobileweb.igse.service.VoucherService;
+import com.mobileweb.igse.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,9 +18,10 @@ public class Controller {
     private ReadingService readingService;
     @Autowired
     private VoucherService voucherService;
-
     @Autowired
     private LoginService loginService;
+    @Autowired
+    private BillingService billingService;
 
     @PostMapping("/register")
     public ResponseEntity registrationController(@RequestBody Customer customer, @RequestParam String evcCode){
@@ -48,6 +46,11 @@ public class Controller {
     @PostMapping("/addVoucher")
     public ResponseEntity redeemVoucher(@RequestBody Customer customer, @RequestParam String evcCode){
         return voucherService.redeemCode(customer, evcCode);
+    }
+
+    @GetMapping("/calculateBill")
+    public ResponseEntity calculateBill(@RequestParam String customer_id){
+        return billingService.calculateBill(customer_id);
     }
 
 }
