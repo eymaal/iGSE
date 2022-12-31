@@ -59,4 +59,9 @@ public class ReadingService {
             return Responses.makeBadRequest(e.getMessage());
         }
     }
+
+    public void settleBills(List<Reading> pendingReadingList) {
+        pendingReadingList.stream().forEach(reading -> reading.setStatus("paid"));
+        readingRepository.saveAll(pendingReadingList);
+    }
 }

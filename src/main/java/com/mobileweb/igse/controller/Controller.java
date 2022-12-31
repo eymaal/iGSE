@@ -53,4 +53,9 @@ public class Controller {
         return billingService.calculateBill(customer_id);
     }
 
+    @PatchMapping("/payBill")
+    public ResponseEntity payBill(@RequestParam String customer_id){
+        return billingService.payBill(customer_id);
+    }
+
 }
