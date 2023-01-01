@@ -58,4 +58,9 @@ public class Controller {
         return billingService.payBill(customer_id);
     }
 
+    @GetMapping("/admin/readings")
+    public ResponseEntity getAllReadings(@RequestParam String customer_id){
+        return readingService.getAllReadings(customer_id);
+    }
+
 }

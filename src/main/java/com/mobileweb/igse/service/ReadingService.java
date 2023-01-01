@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import javax.swing.text.html.Option;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -63,5 +65,22 @@ public class ReadingService {
     public void settleBills(List<Reading> pendingReadingList) {
         pendingReadingList.stream().forEach(reading -> reading.setStatus("paid"));
         readingRepository.saveAll(pendingReadingList);
+    }
+
+    public ResponseEntity getAllReadings(String customer_id) {
+        try{
+            Optional<Customer> customerOptional = loginService.findCustomer(customer_id);
+            if(customerOptional.isEmpty()){
+                throw new Exception("Customer does not exist. Register");
+            } else {
+                if(customerOptional.get().getType().equals("customer")){
+                    throw new Exception("Endpoint is for admin access only.");
+                }
+            }
+            List<Reading> readingList = readingRepository.getAllReadingsSorted();
+            return ResponseEntity.ok(readingList);
+        }catch (Exception e){
+            return Responses.makeBadRequest(e.getMessage());
+        }
     }
 }
