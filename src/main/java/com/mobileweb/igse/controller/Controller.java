@@ -2,10 +2,13 @@ package com.mobileweb.igse.controller;
 
 import com.mobileweb.igse.entity.Customer;
 import com.mobileweb.igse.entity.Reading;
+import com.mobileweb.igse.entity.Tariff;
 import com.mobileweb.igse.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -22,6 +25,8 @@ public class Controller {
     private LoginService loginService;
     @Autowired
     private BillingService billingService;
+    @Autowired
+    private TariffService tariffService;
 
     @PostMapping("/register")
     public ResponseEntity registrationController(@RequestBody Customer customer, @RequestParam String evcCode){
@@ -61,6 +66,16 @@ public class Controller {
     @GetMapping("/admin/readings")
     public ResponseEntity getAllReadings(@RequestParam String customer_id){
         return readingService.getAllReadings(customer_id);
+    }
+
+    @GetMapping("/admin/rates")
+    public ResponseEntity getUnitRates(@RequestParam String customer_id){
+        return tariffService.getUnitReadings(customer_id);
+    }
+
+    @PutMapping("/admin/setrates")
+    public ResponseEntity setUnitRates(@RequestParam String customer_id, @RequestBody List<Tariff> tariffList){
+        return tariffService.setUnitReadings(customer_id, tariffList);
     }
 
 }

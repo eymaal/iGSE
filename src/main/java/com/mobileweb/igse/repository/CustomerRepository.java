@@ -1,7 +1,6 @@
 package com.mobileweb.igse.repository;
 
 import com.mobileweb.igse.entity.Customer;
-import com.mobileweb.igse.entity.Reading;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
