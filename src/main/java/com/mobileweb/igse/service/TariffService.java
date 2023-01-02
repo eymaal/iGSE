@@ -48,7 +48,7 @@ public class TariffService {
                 }
             }
             tariffRepository.saveAll(tariffs);
-            return new ResponseEntity(HttpStatus.OK);
+            return ResponseEntity.ok(tariffs);
         }catch (Exception e){
             return Responses.makeBadRequest(e.getMessage());
         }
