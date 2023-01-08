@@ -1,0 +1,3 @@
+INSERT INTO `Customer` (customer_id, password_hash, address, property_type, bedroom_num, balance, type) VALUES ('gse@shangrila.gov.un','7d03bdc673fe753d95ef4e1fe70cec3d794e26273a75f0f93002e9ab3f6ee5ec','123 University Road','detached',5,200,'admin'),('test@gmail.com','5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5','Flat 2, 10 Vcctoria park road','flat',3,200,'customer');
+INSERT INTO `Voucher` VALUES ('DM8LEESR',0),('NDA7SY2V',0),('RVA7DZ2D',0),('XTX2GZAD',1);
+INSERT INTO `Taiff` VALUES ('electricity_day',0.34),('electricity_night',0.2),('gas',0.1),('sanding_charge',0.74);
