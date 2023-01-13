@@ -34,6 +34,10 @@ public class BillingService {
     public ResponseEntity calculateBill(String customer_id) {
         try{
             List<Reading> pendingReadingList = getPendingReadingList(customer_id);
+            Optional<Reading> lastPaidReading = getLastPaidReading(customer_id);
+            if(lastPaidReading.isPresent()) {
+                pendingReadingList.add(lastPaidReading.get());
+            }
             return ResponseEntity
                     .ok()
                     .contentType(MediaType.APPLICATION_JSON)
@@ -42,6 +46,10 @@ public class BillingService {
         } catch (Exception e){
             return Responses.makeBadRequest(e.getMessage());
         }
+    }
+
+    private Optional<Reading> getLastPaidReading(String customer_id) {
+        return readingRepository.findLastPaidReading(customer_id);
     }
 
     private float calculateDues(List<Reading> pendingReadingList) {
