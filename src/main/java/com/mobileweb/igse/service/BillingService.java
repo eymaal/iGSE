@@ -1,7 +1,9 @@
 package com.mobileweb.igse.service;
 
+import com.mobileweb.igse.entity.Bill;
 import com.mobileweb.igse.entity.Customer;
 import com.mobileweb.igse.entity.Reading;
+import com.mobileweb.igse.repository.BillRepository;
 import com.mobileweb.igse.repository.CustomerRepository;
 import com.mobileweb.igse.repository.ReadingRepository;
 import com.mobileweb.igse.repository.TariffRepository;
@@ -30,6 +32,9 @@ public class BillingService {
     private ReadingRepository readingRepository;
     @Autowired
     private LoginService loginService;
+
+    @Autowired
+    private BillRepository billRepository;
 
     public ResponseEntity calculateBill(String customer_id) {
         try{
@@ -95,6 +100,7 @@ public class BillingService {
             }
             customer.setBalance(customer.getBalance()-dues);
             customerRepository.save(customer);
+            createBill(customer.getCustomer_id());
             readingService.settleBills(pendingReadingList);
             return ResponseEntity.ok()
                     .body(customer);
@@ -102,6 +108,24 @@ public class BillingService {
         } catch (Exception e){
             return Responses.makeBadRequest(e.getMessage());
         }
+    }
+
+    private void createBill(String customerId) {
+        Date startDate = new Date();
+        Date endDate = new Date();
+        Optional<Reading> lastPaid = readingRepository.findLastPaidReading(customerId);
+        if(lastPaid.isPresent()) {
+            startDate = lastPaid.get().getSubmission_date();
+        } else {
+            List<Reading> pendingList = readingRepository.findAllPendingByCustomerId(customerId);
+            startDate = pendingList.get(pendingList.size()-1).getSubmission_date();
+        }
+        Optional<Reading> latestReading = readingRepository.findLatestReading(customerId);
+        if(latestReading.isPresent()) {
+            endDate = latestReading.get().getSubmission_date();
+        }
+        Bill bill = new Bill(customerId, startDate, endDate);
+        billRepository.save(bill);
     }
 
     private List<Reading> getPendingReadingList(String customer_id) throws Exception{

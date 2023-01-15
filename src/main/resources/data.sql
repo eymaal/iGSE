@@ -2,3 +2,4 @@ INSERT INTO `Customer` (customer_id, password_hash, address, property_type, bedr
 INSERT INTO `Voucher` VALUES ('DM8LEESR',0),('NDA7SY2V',0),('RVA7DZ2D',0),('XTX2GZAD',1);
 INSERT INTO `Reading` (reading_id, customer_id, submission_date, elec_readings_day, elec_readings_night, gas_reading, status) VALUES (1,'test@gmail.com','2022-11-20',100,250,800,'paid'),(2,'test@gmail.com','2022-12-20',200,500,1600,'paid'),(3,'test@gmail.com','2023-01-20',300,800,2500,'pending');
 INSERT INTO `Taiff` VALUES ('electricity_day',0.34),('electricity_night',0.2),('gas',0.1),('sanding_charge',0.74);
+INSERT INTO `Bill` (customer_id, start_date, end_date) VALUES ('test@gmail.com','2022-11-20','2022-12-20');
