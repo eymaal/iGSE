@@ -4,6 +4,8 @@ import com.mobileweb.igse.entity.Reading;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,4 +26,7 @@ public interface ReadingRepository extends CrudRepository<Reading,Integer> {
 
     @Query(value = "SELECT * FROM Reading r WHERE r.customer_id=?1 AND r.status='paid' ORDER BY r.submission_date DESC LIMIT 1", nativeQuery = true)
     public Optional<Reading> findLastPaidReading(String customer_id);
+
+    @Query(value = "SELECT * FROM Reading r WHERE r.customer_id=?1 AND r.status='paid' ORDER BY r.submission_date DESC LIMIT 2", nativeQuery = true)
+    public List<Reading> findLatestPaidReadings(String customer_id);
 }

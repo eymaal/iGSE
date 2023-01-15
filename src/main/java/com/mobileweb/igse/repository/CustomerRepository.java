@@ -13,4 +13,7 @@ public interface CustomerRepository extends CrudRepository<Customer, String> {
     @Query(value = "SELECT COUNT(c) FROM Customer c WHERE c.property_type=?1")
     public int countByPropertyType(String propertyType);
 
+    @Query(value = "SELECT c FROM Customer c WHERE c.property_type=?1 AND c.bedroom_num=?2")
+    public List<Customer> findCustomersByPropertyTypeAndBedrooms(String propertyType, int bedroomNum);
+
 }
