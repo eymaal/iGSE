@@ -89,7 +89,7 @@ public class PropertyService {
         readingList.addAll(getLatestBilling(customerList.get(0)));
         for (Customer c : customerList) {
             readingList.clear();
-            readingList.addAll(getLatestBilling(c));
+            readingList.addAll(getFirstAndLastReading(c));
             for(int i=0; i<readingList.size()-1; i++) {
                 dayUnits += readingList.get(i).getElec_readings_day() - readingList.get(i+1).getElec_readings_day();
                 nightUnits  += readingList.get(i).getElec_readings_night() - readingList.get(i+1).getElec_readings_night();
@@ -103,10 +103,15 @@ public class PropertyService {
         float eDay = tariffRepository.findById("electricity_day").get().getRate();
         float eNight = tariffRepository.findById("electricity_night").get().getRate();
         float gas = tariffRepository.findById("gas").get().getRate();
-        float standingCharge = tariffRepository.findById("sanding_charge").get().getRate();
-
         costPerDay = ((eDay * dayUnits) + (eNight * nightUnits) + (gas * gasUnits))/days;
         return costPerDay;
+    }
+
+    private List<Reading> getFirstAndLastReading(Customer c) {
+        List<Reading> readingList = new ArrayList<>();
+        readingList.add(readingRepository.findLatestReadingByCustomerId(c.getCustomer_id()));
+        readingList.add(readingRepository.findOldestReadingByCustomerId(c.getCustomer_id()));
+        return readingList;
     }
 
     private LocalDate getLocalDateFromDate(Date date) {
