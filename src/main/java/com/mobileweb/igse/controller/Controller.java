@@ -78,4 +78,8 @@ public class Controller {
         return tariffService.setUnitReadings(customer_id, tariffList);
     }
 
+    @GetMapping("/admin/stats")
+    public ResponseEntity getStatMap(@RequestParam String customer_id) {
+        return billingService.getStats(customer_id);
+    }
 }

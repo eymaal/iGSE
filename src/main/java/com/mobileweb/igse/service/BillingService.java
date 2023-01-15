@@ -15,9 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class BillingService {
@@ -134,5 +132,68 @@ public class BillingService {
             throw new Exception("Customer does not exist. Register");
         }
         return readingRepository.findAllPendingByCustomerId(customer_id);
+    }
+
+    public ResponseEntity getStats(String customer_id) {
+        try{
+            Optional<Customer> customerOptional = loginService.findCustomer(customer_id);
+            if(customerOptional.isEmpty()){
+                throw new Exception("Customer does not exist. Register");
+            } else {
+                if(customerOptional.get().getType().equals("customer")){
+                    throw new Exception("Endpoint is for admin access only.");
+                }
+            }
+
+            Map<String, Map<String, Double>> statMap = new HashMap<>();
+            List<Customer> customerList = customerRepository.findCustomersByType("customer");
+
+            for(Customer c : customerList) {
+                Bill bill = new Bill();
+                bill.setCustomerId(c.getCustomer_id());
+                Map<String, Double> usageMap = new HashMap<>();
+                //set customerId, startDate, endDate into bill.
+                if(readingRepository.findAllByCustomerId(c.getCustomer_id()).size()<2) {
+                    usageMap.put("dayUnits", 0.0);
+                    usageMap.put("nightUnits", 0.0);
+                    usageMap.put("gasUnits", 0.0);
+                    usageMap.put("days", 0.0);
+                    usageMap.put("totalUnits", 0.0);
+                } else {
+                    Reading endReading;
+                    Reading startReading;
+                    if (readingRepository.findAllPendingByCustomerId(c.getCustomer_id()).size()==0) {
+                        bill = billRepository.findById(c.getCustomer_id()).get();
+                        endReading = readingRepository.findReadingByCustomerIdAndSubmissionDate(c.getCustomer_id(), bill.getEndDate());
+                        startReading = readingRepository.findReadingByCustomerIdAndSubmissionDate(c.getCustomer_id(), bill.getStartDate());
+
+                    } else if (readingRepository.findAllPendingByCustomerId(c.getCustomer_id()).size()==1) {
+                        bill = billRepository.findById(c.getCustomer_id()).get();
+                        endReading = readingRepository.findAllPendingByCustomerId(c.getCustomer_id()).get(0);
+                        startReading = readingRepository.findReadingByCustomerIdAndSubmissionDate(c.getCustomer_id(), bill.getEndDate());
+
+                    } else {
+                        List<Reading> readingList = readingRepository.findAllPendingByCustomerId(c.getCustomer_id());
+                        endReading = readingList.get(0);
+                        startReading = readingList.get(readingList.size()-1);
+                    }
+                    usageMap.put("dayUnits", (double) (endReading.getElec_readings_day() - startReading.getElec_readings_day()));
+                    usageMap.put("nightUnits", (double) (endReading.getElec_readings_night() - startReading.getElec_readings_night()));
+                    usageMap.put("gasUnits", (double) (endReading.getGas_reading() - startReading.getGas_reading()));
+                    LocalDate endDate = getLocalDateFromDate(endReading.getSubmission_date());
+                    LocalDate startDate = getLocalDateFromDate(startReading.getSubmission_date());
+                    usageMap.put("days", (double) ChronoUnit.DAYS.between(startDate, endDate));
+                    double totalUnits = usageMap.get("dayUnits") + usageMap.get("nightUnits") + usageMap.get("gasUnits");
+                    usageMap.put("totalUnits", totalUnits);
+                    usageMap.put("averageUnits", totalUnits/usageMap.get("days"));
+                }
+
+                statMap.put(c.getCustomer_id(), usageMap);
+            }
+            return ResponseEntity.ok(statMap);
+
+        }catch (Exception e){
+            return Responses.makeBadRequest(e.getMessage());
+        }
     }
 }
