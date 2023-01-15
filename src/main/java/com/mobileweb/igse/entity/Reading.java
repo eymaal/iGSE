@@ -8,7 +8,7 @@ import java.util.Date;
 public class Reading {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int reading_id;
     @Column(nullable = false)
     private String customer_id;
