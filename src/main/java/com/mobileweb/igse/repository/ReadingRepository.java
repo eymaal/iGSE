@@ -36,7 +36,9 @@ public interface ReadingRepository extends CrudRepository<Reading,Integer> {
 
     @Query(value = "SELECT * FROM Reading r WHERE r.customer_id=?1 ORDER BY r.submission_date LIMIT 1", nativeQuery = true)
     public Reading findOldestReadingByCustomerId(String customer_id);
-    
+
     @Query(value = "SELECT r FROM Reading r WHERE r.customer_id=?1 AND r.submission_date=?2")
     public Reading findReadingByCustomerIdAndSubmissionDate(String customer_id, Date submission_date);
+
+    public List<Reading> findReadingByStatus(String status);
 }

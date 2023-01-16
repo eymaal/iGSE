@@ -27,6 +27,8 @@ public class Controller {
     private BillingService billingService;
     @Autowired
     private TariffService tariffService;
+    @Autowired
+    private AdminService adminService;
 
     @PostMapping("/register")
     public ResponseEntity registrationController(@RequestBody Customer customer, @RequestParam String evcCode){
@@ -81,5 +83,10 @@ public class Controller {
     @GetMapping("/admin/stats")
     public ResponseEntity getStatMap(@RequestParam String customer_id) {
         return billingService.getStats(customer_id);
+    }
+
+    @GetMapping("/admin/basicStats")
+    public ResponseEntity getBasicStats() {
+        return adminService.getBasicStats();
     }
 }
